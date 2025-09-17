@@ -1,14 +1,15 @@
-import React from "react";
+import Footer from "../../components/footer/Footer";
+import BookList from "../../components/bookList/BookList";
 
 const Dashboard = () => {
   return (
     <div className="h-screen flex gap-1">
-      <h1>Side Bar</h1>
       <div className="flex-1  bg-gray-100">
         <div className="sticky top-0 w-full bg-white shadow-md z-50">
           <h1>Header</h1>
+          <BookList />
         </div>
-        <h1>Footer</h1>
+        <Footer />
       </div>
     </div>
   );
