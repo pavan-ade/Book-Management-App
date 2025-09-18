@@ -80,7 +80,7 @@ const AddBook = () => {
             />
 
             <input
-              type="text"
+              type="text" 
               placeholder="Genres (comma separated)"
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
