@@ -29,7 +29,10 @@ const Book = ({ id, title, author, genre, published_year, status }) => {
             <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
               View
             </button>
-            <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+            <button
+              onClick={() => navigate(`/updateBook/${id}`)}
+              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+            >
               Edit
             </button>
             <button
