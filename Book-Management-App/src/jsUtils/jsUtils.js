@@ -24,3 +24,12 @@ export const addBook = async (newBook) => {
     console.error("Error adding new Book", err.message);
   }
 };
+
+export const deleteBook = async (id)=>{
+  try{
+    const res = await axios.delete(`${BASE_URL}/${id}`);
+    return res.data; 
+  }catch(err){
+    log.error("Error deleting Book",id)
+  }
+}
