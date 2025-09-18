@@ -1,30 +1,39 @@
-import React, { use, useEffect, useState } from "react";
-import { getBooks } from "../../jsUtils/jsUtils";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Book from "../book/Book";
+import { useDispatch, useSelector } from "react-redux";
+import { getBooks } from "../../jsUtils/jsUtils";
+import { setBooks } from "../../feature/bookManagement/bookManagementSlice";
 
 const BookList = () => {
-  const [booksData, setBooksData] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const booksFromRedux = useSelector((state) => state.bookManagement.bookLists);
+
+  const [booksData, setBooksData] = useState({});
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [pageSize, setPageSize] = useState(1);
   const [searchValue, setSearchValue] = useState("");
-  const navigate = useNavigate();
 
-  const fetchBooks = async (page) => {
+  const fetchBooks = async (page = 1) => {
     const data = await getBooks(page);
     setBooksData(data);
     setFilteredBooks(data.data);
+    dispatch(setBooks(data.data));
   };
+
   const handleNext = () => {
     fetchBooks(booksData?.next);
-    setPageSize(pageSize + 1);
+    setPageSize((prev) => prev + 1);
   };
+
   const handlePrev = () => {
     fetchBooks(booksData?.prev);
-    setPageSize(pageSize - 1);
+    setPageSize((prev) => prev - 1);
   };
+
   useEffect(() => {
-    console.log(searchValue);
     const handler = setTimeout(() => {
       if (searchValue.trim()) {
         const query = searchValue.toLowerCase();
@@ -45,31 +54,30 @@ const BookList = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
+
   return (
     <div>
       <h2 className="text-center me-6 text-6xl py-3">Book Management App</h2>
       <p className="text-end me-6 text-2xl py-3">
         Total Books : {booksData?.items}
       </p>
+
       <div className="flex justify-end items-center gap-2 mr-6">
-        <div className="flex justify-end items-center gap-0  mr-6">
-          <div className="border border-gray-300 rounded overflow-hidden">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              className="px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-        </div>
         <div className="border border-gray-300 rounded overflow-hidden">
-          <button 
-            onClick={()=>navigate("/addBook")}
-            className="px-4 py-2 bg-green-600 text-white font-medium rounded hover:bg-green-700 transition-colors">
-            Add
-          </button>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
         </div>
+        <button
+          onClick={() => navigate("/addBook")}
+          className="px-4 py-2 bg-green-600 text-white font-medium rounded hover:bg-green-700 transition-colors"
+        >
+          Add
+        </button>
       </div>
 
       <div className="m-1">
