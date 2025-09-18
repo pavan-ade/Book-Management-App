@@ -1,10 +1,15 @@
 import "./App.css";
-import Dashboard from "./view/dashboard/Dashboard";
+import router from "./route/routes";
+import { RouterProvider } from "react-router-dom";
+import { Suspense } from "react";
+import FallBackLoader from "./components/fallBackLoader/FallBackLoader";
 
 function App() {
   return (
     <>
-      <Dashboard />
+      <Suspense fallback={<FallBackLoader />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </>
   );
 }
