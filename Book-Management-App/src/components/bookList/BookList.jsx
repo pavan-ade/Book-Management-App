@@ -5,11 +5,15 @@ import Book from "../book/Book";
 
 const BookList = () => {
   const [booksData, setBooksData] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
   const [pageSize, setPageSize] = useState(1);
+  const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
 
   const fetchBooks = async (page) => {
     const data = await getBooks(page);
     setBooksData(data);
+    setFilteredBooks(data.data);
   };
   const handleNext = () => {
     fetchBooks(booksData?.next);
@@ -20,13 +24,54 @@ const BookList = () => {
     setPageSize(pageSize - 1);
   };
   useEffect(() => {
+    console.log(searchValue);
+    const handler = setTimeout(() => {
+      if (searchValue.trim()) {
+        const query = searchValue.toLowerCase();
+        const searchedTask = booksData?.data?.filter(
+          ({ title, author }) =>
+            title.toLowerCase().includes(query) ||
+            author.toLowerCase().includes(query)
+        );
+        setFilteredBooks(searchedTask || []);
+      } else {
+        setFilteredBooks(booksData?.data || []);
+      }
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [searchValue, booksData]);
+
+  useEffect(() => {
     fetchBooks();
   }, []);
   return (
     <div>
-      <h2>Book List</h2>
-      <p>Total Books : {booksData?.items}</p>
-      <button>Add</button>
+      <h2 className="text-center me-6 text-6xl py-3">Book Management App</h2>
+      <p className="text-end me-6 text-2xl py-3">
+        Total Books : {booksData?.items}
+      </p>
+      <div className="flex justify-end items-center gap-2 mr-6">
+        <div className="flex justify-end items-center gap-0  mr-6">
+          <div className="border border-gray-300 rounded overflow-hidden">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+        <div className="border border-gray-300 rounded overflow-hidden">
+          <button 
+            onClick={()=>navigate("/addBook")}
+            className="px-4 py-2 bg-green-600 text-white font-medium rounded hover:bg-green-700 transition-colors">
+            Add
+          </button>
+        </div>
+      </div>
+
       <div className="m-1">
         <table>
           <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
@@ -52,7 +97,7 @@ const BookList = () => {
             </tr>
           </thead>
           <tbody className="bg-white text-gray-900">
-            {booksData?.data?.map((book, inx) => (
+            {filteredBooks?.map((book, inx) => (
               <Book key={book.id + inx} {...book} />
             ))}
           </tbody>

@@ -11,7 +11,16 @@ export const getBooks = async (page = 1, limit = 10) => {
       },
     });
     return res.data;
-  } catch (error) {
-    console.error("Error fetching books:", error.message);
+  } catch (err) {
+    console.error("Error fetching books:", err.message);
+  }
+};
+
+export const addBook = async (newBook) => {
+  try {
+    const res = await axios.post(BASE_URL, newBook);
+    return res.data;
+  } catch (err) {
+    console.error("Error adding new Book", err.message);
   }
 };
