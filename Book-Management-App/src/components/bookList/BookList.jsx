@@ -15,9 +15,11 @@ const BookList = () => {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [pageSize, setPageSize] = useState(1);
   const [searchValue, setSearchValue] = useState("");
+  const [bookCount,setBookCount] = useState();
 
   const fetchBooks = async (page = 1) => {
     const data = await getBooks(page);
+    setBookCount(data.items);
     setBooksData(data);
     setFilteredBooks(data.data);
     dispatch(setBooks(data.data));
