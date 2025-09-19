@@ -26,7 +26,10 @@ const Book = ({ id, title, author, genre, published_year, status }) => {
         <td className="py-2 px-4 border-b border-gray-300">{status ?? "-"}</td>
         <td className="py-2 px-4 border-b border-gray-300">
           <div className="flex gap-2">
-            <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+            <button
+              onClick={() => navigate(`/viewBook/${id}`)}
+              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+            >
               View
             </button>
             <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">

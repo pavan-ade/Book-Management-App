@@ -4,7 +4,8 @@ import { addBook } from "../../jsUtils/jsUtils";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../components/toast/Toast";
 
-const AddBook = () => {
+const AddOrEditBook = () => {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [publishedYear, setPublishedYear] = useState("");
@@ -46,7 +47,7 @@ const AddBook = () => {
   return (
     <>
       <div className="fixed inset-0 bg-slate-600 bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative max-h-80 overflow-y-auto">
           <p className="text-2xl text-center text-gray-800 mb-4">
             Add a New Book
           </p>
@@ -125,4 +126,4 @@ const AddBook = () => {
   );
 };
 
-export default AddBook;
+export default AddOrEditBook;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CloseButton from "../../components/closeButton/CloseButton";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteBook } from "../../jsUtils/jsUtils";
+import { deleteBook as deleteBookApi } from "../../jsUtils/jsUtils";
+import { deleteBook as deleteBookAction } from "../../feature/bookManagement/bookManagementSlice";
 import Toast from "../../components/toast/Toast";
 
 const DeleteBook = () => {
@@ -13,7 +14,8 @@ const DeleteBook = () => {
     const res = await deleteBook(param.id);
     console.log(res, "testing");
     if (res) {
-      setToast({ message: "Book added successfully!", type: "success" });
+      dispatch(deleteBookAction({ id }));
+      setToast({ message: "Book deleted successfully!", type: "success" });
     } else {
       setToast({ message: "Failed to add book", type: "error" });
     }
@@ -26,7 +28,9 @@ const DeleteBook = () => {
   return (
     <div className="fixed inset-0 bg-slate-600 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
-        <p className="text-2xl text-center text-gray-800 mb-4">Delete Book</p>
+        <p className="text-2xl text-center text-gray-800 mb-4">
+          Do you want delete book ?
+        </p>
         <CloseButton />
         <div className="flex justify-center mt-3 ">
           <button

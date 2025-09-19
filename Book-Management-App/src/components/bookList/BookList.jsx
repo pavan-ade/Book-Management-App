@@ -28,19 +28,19 @@ const BookList = () => {
     const handler = setTimeout(() => {
       if (searchValue.trim()) {
         const query = searchValue.toLowerCase();
-        const searchedTask = booksData?.data?.filter(
+        const searched = booksFromRedux.filter(
           ({ title, author }) =>
             title.toLowerCase().includes(query) ||
             author.toLowerCase().includes(query)
         );
-        setFilteredBooks(searchedTask || []);
+        setFilteredBooks(searched);
       } else {
-        setFilteredBooks(booksData?.data || []);
+        setFilteredBooks(booksFromRedux);
       }
-    }, 500);
+    }, 300);
 
     return () => clearTimeout(handler);
-  }, [searchValue, booksData]);
+  }, [searchValue, booksFromRedux]);
 
   useEffect(() => {
     fetchBooks();
@@ -73,25 +73,25 @@ const BookList = () => {
       </div>
 
       <div className="m-1">
-        <table>
+        <table className="xl:table-fixed w-full border-collapse">
           <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
             <tr>
-              <th className="py-3 px-6 text-left border-b border-gray-300">
+              <th className="xl:w-1/6 py-3 px-6 text-left border-b border-gray-300">
                 Title
               </th>
-              <th className="py-3 px-6 text-left border-b border-gray-300">
+              <th className="xl:w-1/6 py-3 px-6 text-left border-b border-gray-300">
                 Author
               </th>
-              <th className="py-3 px-6 text-left border-b border-gray-300">
+              <th className="xl:w-2/6 py-3 px-6 text-left border-b border-gray-300">
                 Genre
               </th>
-              <th className="py-3 px-6 text-left border-b border-gray-300">
+              <th className="xl:w-1/12 py-3 px-6 text-left border-b border-gray-300">
                 Published Year
               </th>
-              <th className="py-3 px-6 text-left border-b border-gray-300">
+              <th className="xl:w-1/12 py-3 px-6 text-left border-b border-gray-300">
                 Status
               </th>
-              <th className="py-3 px-6 text-left border-b border-gray-300">
+              <th className="xl:w-1/6 py-3 px-6 text-left border-b border-gray-300">
                 Action
               </th>
             </tr>
@@ -107,9 +107,9 @@ const BookList = () => {
       <div className="flex items-center justify-end gap-2 mt-6 mr-6 pb-2">
         <button
           className={`px-4 py-2 rounded bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors ${
-            !booksData?.prev ? "opacity-50 cursor-not-allowed" : ""
+            pageSize <= 1 ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!booksData?.prev}
+          disabled={pageSize <= 1}
           onClick={handlePrev}
         >
           Prev
@@ -120,10 +120,10 @@ const BookList = () => {
         </span>
 
         <button
-          className={`px-4 py-2 rounded bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors ${
-            !booksData?.next ? "opacity-50 cursor-not-allowed" : ""
+          className={`px-4 py-2 rounded bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors${
+            pageSize >= bookCount / 10 ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!booksData?.next}
+          disabled={pageSize >= bookCount / 10}
           onClick={handleNext}
         >
           Next
