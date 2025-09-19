@@ -14,7 +14,7 @@ import {
 } from "../../feature/bookManagement/bookManagementSlice";
 
 const AddOrEditBook = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [publishedYear, setPublishedYear] = useState("");
@@ -85,7 +85,7 @@ const AddOrEditBook = () => {
   return (
     <>
       <div className="fixed inset-0 bg-slate-600 bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative max-h-80 overflow-y-auto">
           <p className="text-2xl text-center text-gray-800 mb-4">
             {id ? "Edit Book" : "Add a New Book"}
           </p>
