@@ -20,15 +20,19 @@ const router = createBrowserRouter([
         Component: AddBook,
       },
       {
+        path: "/updateBook/:id",
+        Component: AddBook,
+      },
+      {
         path: "/deleteBook/:id",
-        Component : DeleteBook
+        Component: DeleteBook,
       },
     ],
   },
   {
     path: "*",
-    Component : ErrorPage
-  }
+    Component: ErrorPage,
+  },
 ]);
 
 export default router;
